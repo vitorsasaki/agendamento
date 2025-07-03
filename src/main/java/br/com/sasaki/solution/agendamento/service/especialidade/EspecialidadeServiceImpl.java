@@ -52,7 +52,8 @@ public class EspecialidadeServiceImpl implements EspecialidadeService{
         repository.delete(entity);
     }
 
-    private Especialidade buscarEspecialidadePorId(Long id) {
+    @Override
+    public Especialidade buscarEspecialidadePorId(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Especialidade não encontrada com ID: " + id));
     }

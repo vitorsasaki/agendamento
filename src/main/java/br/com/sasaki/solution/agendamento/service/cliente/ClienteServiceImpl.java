@@ -2,10 +2,13 @@ package br.com.sasaki.solution.agendamento.service.cliente;
 
 import br.com.sasaki.solution.agendamento.dto.cliente.ClienteRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.cliente.ClienteResponseDTO;
+import br.com.sasaki.solution.agendamento.exception.BusinessException;
 import br.com.sasaki.solution.agendamento.exception.ResourceNotFoundException;
 import br.com.sasaki.solution.agendamento.mapper.ClienteMapper;
 import br.com.sasaki.solution.agendamento.model.Cliente;
 import br.com.sasaki.solution.agendamento.repository.ClienteRepository;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ClienteServiceImpl implements ClienteService{
+public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository repository;
 
@@ -53,17 +56,26 @@ public class ClienteServiceImpl implements ClienteService{
 
     // --- Métodos privados de apoio ---
 
-    private Cliente findClienteByIdOrThrow(Long id) {
+    @Override
+    public Cliente findClienteByIdOrThrow(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com ID: " + id));
+                .orElseThrow(() -> new BusinessException("Cliente não encontrado com ID: " + id));
     }
 
     private void validarCnpjEEmail(ClienteRequestDTO dto) {
-        if (repository.existsByCpfCnpj(dto.cpfCnpj())) {
-            throw new IllegalArgumentException("Já existe um cliente com este CNPJ.");
+        validarSeCnpjJaExiste(dto.cpfCnpj());
+        validarSeEmailJaExiste(dto.email());
+    }
+
+    private void validarSeCnpjJaExiste(String cpfCnpj) {
+        if (repository.existsByCpfCnpj(cpfCnpj)) {
+            throw new BusinessException("Já existe um cliente com este CNPJ.");
         }
-        if (repository.existsByEmail(dto.email())) {
-            throw new IllegalArgumentException("Já existe um cliente com este e-mail.");
+    }
+
+    private void validarSeEmailJaExiste(String email) {
+        if (repository.existsByEmail(email)) {
+            throw new BusinessException("Já existe um cliente com este e-mail.");
         }
     }
 }

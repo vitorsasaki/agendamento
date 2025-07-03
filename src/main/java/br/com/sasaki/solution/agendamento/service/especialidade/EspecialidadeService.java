@@ -2,6 +2,7 @@ package br.com.sasaki.solution.agendamento.service.especialidade;
 
 import br.com.sasaki.solution.agendamento.dto.especialidade.EspecialidadeRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.especialidade.EspecialidadeResponseDTO;
+import br.com.sasaki.solution.agendamento.model.Especialidade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,6 @@ public interface EspecialidadeService {
     EspecialidadeResponseDTO atualizar(Long id, EspecialidadeRequestDTO dto);
 
     void deletar(Long id);
+
+    Especialidade buscarEspecialidadePorId(Long id);
 }
