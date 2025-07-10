@@ -11,5 +11,6 @@ public interface ProfissionalRepository extends JpaRepository<Profissional, Long
 
     Page<Profissional> findAllByNomeProfissionalContainingIgnoreCase(String nomeProfissional, Pageable pageable);
     boolean existsByCrm(String crm);
+    boolean existsByCrmAndIdCliente_Id(String crm, Long idCliente);
 
 }

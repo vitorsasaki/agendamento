@@ -29,7 +29,7 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 
     @Override
     public ProfissionalResponseDTO salvar(ProfissionalRequestDTO dto) {
-        verificaSeExisteCrmCadastrado(dto.crm());
+        verificaSeExisteCrmCadastrado(dto.crm(), dto.idCliente());
         Profissional profissional = mapper.toEntity(dto);
         profissional.setIdCliente(clienteService.findClienteByIdOrThrow(dto.idCliente()));
         profissional.setIdEspecialidade(especialidadeService.buscarEspecialidadePorId(dto.idEspecialidade()));
@@ -73,8 +73,8 @@ public class ProfissionalServiceImpl implements ProfissionalService {
         repository.deleteById(id);
     }
 
-    private void verificaSeExisteCrmCadastrado(String crm){
-        if(repository.existsByCrm(crm)){
+    private void verificaSeExisteCrmCadastrado(String crm, Long idCliente){
+        if(repository.existsByCrmAndIdCliente_Id(crm, idCliente)){
             throw new BusinessException("Já existe um médico cadastrado com esse CRM");
         }
     }
