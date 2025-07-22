@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PacienteService {
-    PacienteResponseDTO criar(PacienteRequestDTO dto);
-    Page<PacienteResponseDTO> listarTodos(Pageable pageable);
+    PacienteResponseDTO criar(PacienteRequestDTO dto, Long idCliente);
+    Page<PacienteResponseDTO> listarTodos(Pageable pageable, Long idCliente);
     PacienteResponseDTO buscarPorId(Long id);
     PacienteResponseDTO atualizar(Long id, PacienteRequestDTO dto);
     void deletar(Long id);

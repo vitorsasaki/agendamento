@@ -1,7 +1,9 @@
 package br.com.sasaki.solution.agendamento.controller;
 
+import br.com.sasaki.solution.agendamento.config.TenantContext;
 import br.com.sasaki.solution.agendamento.dto.profissional.ProfissionalRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.profissional.ProfissionalResponseDTO;
+import br.com.sasaki.solution.agendamento.security.JwtTokenProvider;
 import br.com.sasaki.solution.agendamento.service.profissional.ProfissionalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class ProfissionalController {
 
     @GetMapping
     public ResponseEntity<Page<ProfissionalResponseDTO>> listar(Pageable pageable) {
-        return ResponseEntity.ok(profissionalService.listarTodos(pageable));
+        return ResponseEntity.ok(profissionalService.listarTodos(pageable, TenantContext.getCurrentTenant()));
     }
 
     @GetMapping("/{id}")
@@ -36,7 +38,7 @@ public class ProfissionalController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<ProfissionalResponseDTO>> buscarPorNome(@RequestParam String nome, Pageable pageable) {
-        return ResponseEntity.ok(profissionalService.buscarPorNome(nome, pageable));
+        return ResponseEntity.ok(profissionalService.buscarPorNome(nome, pageable, TenantContext.getCurrentTenant()));
     }
 
     @PutMapping("/{id}")

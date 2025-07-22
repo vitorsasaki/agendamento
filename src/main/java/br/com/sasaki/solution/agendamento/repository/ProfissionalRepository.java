@@ -9,8 +9,9 @@ import java.util.Optional;
 
 public interface ProfissionalRepository extends JpaRepository<Profissional, Long> {
 
-    Page<Profissional> findAllByNomeProfissionalContainingIgnoreCase(String nomeProfissional, Pageable pageable);
+    Page<Profissional> findAllByNomeProfissionalContainingIgnoreCaseAndIdCliente_Id(String nomeProfissional, Pageable pageable, Long idCliente);
     boolean existsByCrm(String crm);
     boolean existsByCrmAndIdCliente_Id(String crm, Long idCliente);
+    Page<Profissional> findByIdCliente_Id(Long idCliente, Pageable pageable);
 
 }

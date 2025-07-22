@@ -9,11 +9,11 @@ public interface ProfissionalService {
 
     ProfissionalResponseDTO salvar(ProfissionalRequestDTO dto);
 
-    Page<ProfissionalResponseDTO> listarTodos(Pageable pageable);
+    Page<ProfissionalResponseDTO> listarTodos(Pageable pageable, Long idCliente);
 
     ProfissionalResponseDTO buscarPorId(Long id);
 
-    Page<ProfissionalResponseDTO> buscarPorNome(String nomeProfissional, Pageable pageable);
+    Page<ProfissionalResponseDTO> buscarPorNome(String nomeProfissional, Pageable pageable, Long idCliente);
 
     ProfissionalResponseDTO atualizar(Long id, ProfissionalRequestDTO dto);
 

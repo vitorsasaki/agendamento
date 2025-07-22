@@ -1,5 +1,6 @@
 package br.com.sasaki.solution.agendamento.service.profissional;
 
+import br.com.sasaki.solution.agendamento.config.TenantContext;
 import br.com.sasaki.solution.agendamento.dto.profissional.ProfissionalRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.profissional.ProfissionalResponseDTO;
 import br.com.sasaki.solution.agendamento.exception.BusinessException;
@@ -29,17 +30,17 @@ public class ProfissionalServiceImpl implements ProfissionalService {
 
     @Override
     public ProfissionalResponseDTO salvar(ProfissionalRequestDTO dto) {
-        verificaSeExisteCrmCadastrado(dto.crm(), dto.idCliente());
+        verificaSeExisteCrmCadastrado(dto.crm(), TenantContext.getCurrentTenant());
         Profissional profissional = mapper.toEntity(dto);
-        profissional.setIdCliente(clienteService.findClienteByIdOrThrow(dto.idCliente()));
+        profissional.setIdCliente(clienteService.findClienteByIdOrThrow(TenantContext.getCurrentTenant()));
         profissional.setIdEspecialidade(especialidadeService.buscarEspecialidadePorId(dto.idEspecialidade()));
 
         return mapper.toDTO(repository.save(profissional));
     }
 
     @Override
-    public Page<ProfissionalResponseDTO> listarTodos(Pageable pageable) {
-        return repository.findAll(pageable).map(mapper::toDTO);
+    public Page<ProfissionalResponseDTO> listarTodos(Pageable pageable, Long idCliente) {
+        return repository.findByIdCliente_Id(idCliente, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -50,17 +51,16 @@ public class ProfissionalServiceImpl implements ProfissionalService {
     }
 
     @Override
-    public Page<ProfissionalResponseDTO> buscarPorNome(String nome, Pageable pageable) {
-        return repository.findAllByNomeProfissionalContainingIgnoreCase(nome, pageable)
+    public Page<ProfissionalResponseDTO> buscarPorNome(String nome, Pageable pageable, Long idCliente) {
+        return repository.findAllByNomeProfissionalContainingIgnoreCaseAndIdCliente_Id(nome, pageable, idCliente)
                 .map(mapper::toDTO);
     }
 
     @Override
     public ProfissionalResponseDTO atualizar(Long id, ProfissionalRequestDTO dto) {
-        var profissional = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Profissional não encontrado"));
+        var profissional = buscarProfissionalOuFalhar(id);
         mapper.updateEntityFromDTO(dto, profissional);
-        profissional.setIdCliente(clienteService.findClienteByIdOrThrow(dto.idCliente()));
+        profissional.setIdCliente(clienteService.findClienteByIdOrThrow(TenantContext.getCurrentTenant()));
         profissional.setIdEspecialidade(especialidadeService.buscarEspecialidadePorId(dto.idEspecialidade()));
         return mapper.toDTO(repository.save(profissional));
     }
@@ -77,6 +77,11 @@ public class ProfissionalServiceImpl implements ProfissionalService {
         if(repository.existsByCrmAndIdCliente_Id(crm, idCliente)){
             throw new BusinessException("Já existe um médico cadastrado com esse CRM");
         }
+    }
+
+    public Profissional buscarProfissionalOuFalhar(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Profissional não encontrado"));
     }
 
 }

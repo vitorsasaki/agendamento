@@ -16,4 +16,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     Optional<Paciente> findByIdAndIdCliente_Id(Long id, Long idCliente);
 
     Page<Paciente> findByNomeContainingIgnoreCaseAndIdCliente_Id(String nome, Long idCliente, Pageable pageable);
+
+    Page<Paciente> findByIdCliente_Id(Long idCliente, Pageable pageable);
 }

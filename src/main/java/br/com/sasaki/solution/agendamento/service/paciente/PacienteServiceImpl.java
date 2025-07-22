@@ -1,5 +1,6 @@
 package br.com.sasaki.solution.agendamento.service.paciente;
 
+import br.com.sasaki.solution.agendamento.config.TenantContext;
 import br.com.sasaki.solution.agendamento.dto.paciente.PacienteRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.paciente.PacienteResponseDTO;
 import br.com.sasaki.solution.agendamento.exception.BusinessException;
@@ -24,17 +25,17 @@ public class PacienteServiceImpl implements PacienteService {
     private final ClienteService clienteService;
 
     @Override
-    public PacienteResponseDTO criar(PacienteRequestDTO dto) {
-        validarCpfEEmail(dto.cpf(), dto.email(), dto.idCliente());
+    public PacienteResponseDTO criar(PacienteRequestDTO dto, Long idCliente) {
+        validarCpfEEmail(dto.cpf(), dto.email(), idCliente);
 
         Paciente paciente = pacienteMapper.toEntity(dto);
-        paciente.setIdCliente(clienteService.findClienteByIdOrThrow(dto.idCliente()));
+        paciente.setIdCliente(clienteService.findClienteByIdOrThrow(idCliente));
         return pacienteMapper.toDTO(pacienteRepository.save(paciente));
     }
 
     @Override
-    public Page<PacienteResponseDTO> listarTodos(Pageable pageable) {
-        return pacienteRepository.findAll(pageable).map(pacienteMapper::toDTO);
+    public Page<PacienteResponseDTO> listarTodos(Pageable pageable, Long idCliente) {
+        return pacienteRepository.findByIdCliente_Id(idCliente, pageable).map(pacienteMapper::toDTO);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class PacienteServiceImpl implements PacienteService {
     public PacienteResponseDTO atualizar(Long id, PacienteRequestDTO dto) {
         Paciente existente = buscarPacienteOuFalhar(id);
 
-        Cliente cliente = clienteService.findClienteByIdOrThrow(dto.idCliente());
+        Cliente cliente = clienteService.findClienteByIdOrThrow(TenantContext.getCurrentTenant());
         validarCpfEEmail(dto.cpf(), dto.email(), id);
 
         pacienteMapper.updateEntityFromDTO(dto, existente);
@@ -79,7 +80,7 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
 
-    private Paciente buscarPacienteOuFalhar(Long id) {
+    public Paciente buscarPacienteOuFalhar(Long id) {
         return pacienteRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Paciente não encontrado com ID: " + id));
     }

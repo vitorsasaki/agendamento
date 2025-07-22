@@ -14,7 +14,7 @@ public record PacienteRequestDTO(
         String email,
         @NotBlank
         String telefone,
-        @NotNull
+
         Long idCliente
 ) {
 }

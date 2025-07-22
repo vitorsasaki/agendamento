@@ -1,5 +1,6 @@
 package br.com.sasaki.solution.agendamento.controller;
 
+import br.com.sasaki.solution.agendamento.config.TenantContext;
 import br.com.sasaki.solution.agendamento.dto.paciente.PacienteRequestDTO;
 import br.com.sasaki.solution.agendamento.dto.paciente.PacienteResponseDTO;
 import br.com.sasaki.solution.agendamento.service.paciente.PacienteService;
@@ -21,13 +22,13 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<PacienteResponseDTO> criar(@Valid @RequestBody PacienteRequestDTO dto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.criar(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.criar(dto, TenantContext.getCurrentTenant()));
     }
 
     @GetMapping
 
     public ResponseEntity<Page<PacienteResponseDTO>> listar(Pageable pageable){
-        return ResponseEntity.ok(pacienteService.listarTodos(pageable));
+        return ResponseEntity.ok(pacienteService.listarTodos(pageable, TenantContext.getCurrentTenant()));
     }
 
     @GetMapping("/{id}")
