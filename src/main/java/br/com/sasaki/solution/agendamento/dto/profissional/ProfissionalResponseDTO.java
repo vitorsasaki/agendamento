@@ -5,6 +5,6 @@ public record ProfissionalResponseDTO(
         String nomeProfissional,
         String crm,
         Long idCliente,
-        Long idEspecialidade
+        String especialidade
 ) {
 }

@@ -28,6 +28,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         String token = jwtTokenProvider.generateToken(usuario);
-        return new AuthResponseDTO(token, "Bearer");
+        return new AuthResponseDTO(token, "Bearer", usuario.getNome());
     }
 }

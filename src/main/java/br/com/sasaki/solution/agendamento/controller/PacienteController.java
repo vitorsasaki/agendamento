@@ -50,9 +50,8 @@ public class PacienteController {
     @GetMapping("/search")
     public ResponseEntity<Page<PacienteResponseDTO>> buscarPorNome(
             @RequestParam String nome,
-            @RequestParam Long idCliente,
             Pageable pageable) {
-        return ResponseEntity.ok(pacienteService.buscarPorNome(nome, idCliente, pageable));
+        return ResponseEntity.ok(pacienteService.buscarPorNome(nome, TenantContext.getCurrentTenant(), pageable));
     }
 
 

@@ -9,7 +9,8 @@ public record AgendamentoResponseDTO(
         LocalDateTime dataHora,
         String nomePaciente,
         String nomeProfissional,
-        String observacao
+        String observacao,
+        String status
 
 ) {
 }

@@ -11,7 +11,8 @@ public record AgendamentoRequestDTO(
         Long idPaciente,
         @NotNull
         Long idProfissional,
-        String observacao
+        String observacao,
+        String status
 
 ) {
 }

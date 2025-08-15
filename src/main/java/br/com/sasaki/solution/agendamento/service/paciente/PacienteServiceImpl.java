@@ -26,7 +26,7 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     public PacienteResponseDTO criar(PacienteRequestDTO dto, Long idCliente) {
-        validarCpfEEmail(dto.cpf(), dto.email(), idCliente);
+        validarCpf(dto.cpf(), idCliente);
 
         Paciente paciente = pacienteMapper.toEntity(dto);
         paciente.setIdCliente(clienteService.findClienteByIdOrThrow(idCliente));
@@ -48,8 +48,6 @@ public class PacienteServiceImpl implements PacienteService {
         Paciente existente = buscarPacienteOuFalhar(id);
 
         Cliente cliente = clienteService.findClienteByIdOrThrow(TenantContext.getCurrentTenant());
-        validarCpfEEmail(dto.cpf(), dto.email(), id);
-
         pacienteMapper.updateEntityFromDTO(dto, existente);
         existente.setIdCliente(cliente);
 
@@ -69,14 +67,14 @@ public class PacienteServiceImpl implements PacienteService {
                 .map(pacienteMapper::toDTO);
     }
 
-    private void validarCpfEEmail(String cpf, String email, Long idCliente) {
+    private void validarCpf(String cpf,  Long idCliente) {
         if (pacienteRepository.existsByCpfAndIdCliente_Id(cpf, idCliente)) {
             throw new BusinessException("Já existe um paciente com este CPF para este cliente.");
         }
 
-        if (pacienteRepository.existsByEmailAndIdCliente_Id(email, idCliente)) {
+       /* if (pacienteRepository.existsByEmailAndIdCliente_Id(email, idCliente)) {
             throw new BusinessException("Já existe um paciente com este e-mail para este cliente.");
-        }
+        }*/
     }
 
 

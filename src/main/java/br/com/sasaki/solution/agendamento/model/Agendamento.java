@@ -35,4 +35,6 @@ public class Agendamento {
     private Cliente cliente;
 
     private String observacao;
+
+    private String status;
 }
