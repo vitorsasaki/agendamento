@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AgendamentoServiceImpl implements AgendamentoService {
@@ -40,6 +42,14 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     public Page<AgendamentoResponseDTO> listarTodos(Pageable pageable, Long idCliente) {
         return agendamentoRepository.findByCliente_Id(idCliente, pageable)
                 .map(agendamentoMapper::toDTO);
+    }
+
+    @Override
+    public List<AgendamentoResponseDTO> listarTodos(Long idCliente) {
+        return agendamentoRepository.findByCliente_Id(idCliente)
+                .stream()
+                .map(agendamentoMapper:: toDTO)
+                .toList();
     }
 
     @Override

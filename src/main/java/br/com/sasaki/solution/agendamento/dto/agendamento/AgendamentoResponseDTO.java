@@ -10,7 +10,9 @@ public record AgendamentoResponseDTO(
         String nomePaciente,
         String nomeProfissional,
         String observacao,
-        String status
+        String status,
+        Long idPaciente,
+        Long idProfissional
 
 ) {
 }

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +30,11 @@ public class AgendamentoController {
     @GetMapping
     public ResponseEntity<Page<AgendamentoResponseDTO>> listar(Pageable pageable){
         return ResponseEntity.ok(agendamentoService.listarTodos(pageable, TenantContext.getCurrentTenant()));
+    }
+
+    @GetMapping("/automacao")
+    public ResponseEntity<List<AgendamentoResponseDTO>> listar(){
+        return ResponseEntity.ok(agendamentoService.listarTodos(TenantContext.getCurrentTenant()));
     }
 
     @PutMapping("/{id}")

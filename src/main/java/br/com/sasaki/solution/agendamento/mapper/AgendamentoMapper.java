@@ -12,5 +12,7 @@ public interface AgendamentoMapper extends BaseMapper<Agendamento, AgendamentoRe
     @Override
     @Mapping(target = "nomePaciente", source = "paciente.nome")
     @Mapping(target = "nomeProfissional", source = "profissional.nomeProfissional")
+    @Mapping(target = "idPaciente", source = "paciente.id")
+    @Mapping(target = "idProfissional", source = "profissional.id")
     AgendamentoResponseDTO toDTO(Agendamento entity);
 }
