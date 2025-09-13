@@ -1,0 +1,38 @@
+# Arquivos do Maven
+target/
+!target/*.jar
+
+# Arquivos do IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Documentação
+*.md
+*.pdf
+
+# Arquivos de configuração local
+.env
+.env.local
