@@ -26,7 +26,7 @@ docker-compose -f docker-compose.prod.yml up -d
 
 # Aguardar aplicação ficar pronta
 echo "⏳ Aguardando aplicação ficar pronta..."
-timeout 120 bash -c 'until curl -f http://localhost:8080/actuator/health; do sleep 5; done'
+timeout 120 bash -c 'until curl -f http://agendamento.conect365.com/actuator/health; do sleep 5; done'
 
 if [ $? -eq 0 ]; then
     echo "✅ Deploy concluído com sucesso!"

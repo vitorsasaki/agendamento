@@ -9,8 +9,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
+<<<<<<< HEAD
       - agendamento_network
     ports:
+=======
+      - agendamento_network  
+    ports:                    
+>>>>>>> 373911f (modifica o docker-compose)
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
@@ -31,7 +36,11 @@ services:
       JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
     networks:
       - agendamento_network
+<<<<<<< HEAD
       - infrastructure_default
+=======
+      - infrastructure_default        
+>>>>>>> 373911f (modifica o docker-compose)
     depends_on:
       postgres:
         condition: service_healthy
