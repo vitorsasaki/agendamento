@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,6 +40,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/actuator/health",
@@ -58,10 +60,7 @@ public class SecurityConfig {
         if (isProductionProfile()) {
             // Configuração para produção
             configuration.setAllowedOrigins(List.of(
-                    "https://agendamento.conect365.com",
-                    "https://www.agendamento.conect365.com",
-                    "https://agendamento-app.conect365.com",
-                    "https://www.agendamento-app.conect365.com"
+                    "https://*.conect365.com"
             ));
         } else {
             // Configuração para desenvolvimento

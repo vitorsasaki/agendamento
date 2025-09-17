@@ -43,6 +43,11 @@ services:
       - "traefik.http.routers.agendamento.tls.certresolver=leresolver"
       - "traefik.http.services.agendamento.loadbalancer.server.port=8080"
       - "traefik.docker.network=infrastructure_default"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowOriginList=https://agendamento-app.conect365.com,https://www.agendamento-app.conect365.com"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowMethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowHeaders=*"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowCredentials=true"
+      - "traefik.http.routers.agendamento.middlewares=api-cors@docker"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
