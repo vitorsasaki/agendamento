@@ -60,7 +60,10 @@ public class SecurityConfig {
         if (isProductionProfile()) {
             // Configuração para produção
             configuration.setAllowedOrigins(List.of(
-                    "https://*.conect365.com"
+                    "https://agendamento.conect365.com",
+                    "https://www.agendamento.conect365.com", 
+                    "https://agendamento-app.conect365.com",
+                    "https://n8n.conect365.com"
             ));
         } else {
             // Configuração para desenvolvimento
